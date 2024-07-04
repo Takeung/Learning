@@ -21,7 +21,7 @@
 
 ### 2.2 设置Ubuntu软件源
 
-![image-20240704141826468](/home/tyjt/snap/typora/90/.config/Typora/typora-user-images/image-20240704141826468.png)
+<img src="/home/tyjt/snap/typora/90/.config/Typora/typora-user-images/image-20240704141826468.png" alt="image-20240704141826468" />
 
 #### 2.2.1 首先确认是否已经启用Universe源
 
