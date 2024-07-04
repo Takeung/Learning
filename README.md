@@ -1,2 +1,1 @@
 # Takeung
-# first commit
