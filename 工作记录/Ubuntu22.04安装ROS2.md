@@ -21,7 +21,7 @@
 
 ### 2.2 设置Ubuntu软件源
 
-<img src="/home/tyjt/snap/typora/90/.config/Typora/typora-user-images/image-20240704141826468.png" alt="image-20240704141826468" />
+![](https://s2.loli.net/2024/07/04/E1TpWFVhJ8yRoKj.png)
 
 #### 2.2.1 首先确认是否已经启用Universe源
 
@@ -74,7 +74,7 @@ sudo apt install ros-humble-desktop
 
 你可能会遇到如下错误：
 
-![image-20240704142246353](/home/tyjt/snap/typora/90/.config/Typora/typora-user-images/image-20240704142246353.png)
+![](https://s2.loli.net/2024/07/04/QGSdX7sAnz2fPOw.png)
 
 **解决方法**：先把 “/etc/apt/sources.list” 中的： http://cn.archive.ubuntu.com/ubuntu全部替换为可用的镜像，例如阿里云的：http://mirrors.aliyun.com/ubuntu/。然后使用
 
@@ -103,7 +103,7 @@ ros2 run demo_nodes_cpp talker
 
 应该看到
 
-![image-20240704142651247](/home/tyjt/snap/typora/90/.config/Typora/typora-user-images/image-20240704142651247.png)
+![](https://s2.loli.net/2024/07/04/lfWwLPxZr278N6H.png)
 
 打开第二个终端，启动一个数据的订阅者节点：
 
@@ -113,4 +113,4 @@ ros2 run demo_nodes_py listener
 
 应该能看到：
 
-![image-20240704142731088](/home/tyjt/snap/typora/90/.config/Typora/typora-user-images/image-20240704142731088.png)
+![](https://s2.loli.net/2024/07/04/7xnuBbiev4t3LZA.png)
