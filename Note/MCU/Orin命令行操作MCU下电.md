@@ -33,7 +33,7 @@ sudo minicom -s
 
 ![](https://s2.loli.net/2024/07/09/7yP9TqxeLR3tsjI.png)
 
-5、再minicom菜单界面选择Exit退出，之后输入下述指令下电
+5、在minicom菜单界面选择Exit退出，之后输入下述指令下电
 
 ```
 ^^01010500000005$$
