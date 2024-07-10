@@ -163,7 +163,7 @@ VirtualBox 默认安装好的桌面系统，在使用体验上并不是很好。
 
 如果虚拟机是 Linux，在点击了「安装增强功能」菜单后，需要在命令端进行操作。相关命令按操作顺序分别如下：
 
-```shell
+```bash
 # 创建挂载目录
 sudo mkdir /mnt/cdrom
 
@@ -238,13 +238,13 @@ sudo ./VBoxLinuxAdditions.run
 
 首先需要添加 `usbfs` 用户组。
 
-```shell
+```bash
 sudo groupadd usbfs
 ```
 
 然后把当前用户添加到 `usbfs` 和 `vboxusers` 用户组。
 
-```shell
+```bash
 sudo usermod -aG usbfs $USER
 sudo usermod -aG vboxusers $USER
 ```

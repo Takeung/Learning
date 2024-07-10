@@ -18,7 +18,7 @@
 
 ## 问题现象
 
-```shell
+```bash
 ➜  Code git:(dev) git push
 To github.com:Takeung/Learning.git
  ! [rejected]        dev -> dev (non-fast-forward)
@@ -40,32 +40,32 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 1. 拉取远程分支的更改：
 
-    ```sh
+    ```bash
     git pull origin dev
     ```
 
 2. 解决冲突（如果有）：
 
-    ```sh
+    ```bash
     # 编辑冲突文件，解决冲突
     git add <conflicted-file>
     ```
 
 3. 提交合并后的更改：
 
-    ```sh
+    ```bash
     git commit
     ```
 
 4. 推送到远程仓库：
 
-    ```sh
+    ```bash
     git push origin dev
     ```
 
 但初步操作之后还是遇到问题：
 
-```shell
+```bash
 ➜  Code git:(dev) git pull origin dev
 From github.com:Takeung/Learning
  * branch            dev        -> FETCH_HEAD
@@ -92,25 +92,25 @@ fatal: Need to specify how to reconcile divergent branches.
 
 **a. 使用合并（默认策略）**
 
-```sh
+```bash
 git config pull.rebase false
 ```
 
 **b. 使用变基**
 
-```sh
+```bash
 git config pull.rebase true
 ```
 
 **c. 仅允许快进合并**
 
-```sh
+```bash
 git config pull.ff only
 ```
 
 然后再次尝试拉取更改：
 
-```sh
+```bash
 git pull origin dev
 ```
 
@@ -121,13 +121,13 @@ git pull origin dev
 1. **打开冲突的文件手动修改以解决冲突。**
 2. **标记冲突已解决并添加更改：**
 
-    ```sh
+    ```bash
     git add <conflicted-file>
     ```
 
 3. **提交合并或变基：**
 
-    ```sh
+    ```bash
     git commit
     ```
 
@@ -135,7 +135,7 @@ git pull origin dev
 
 合并或变基完成后，你可以推送本地更改到远程仓库：
 
-```sh
+```bash
 git push origin dev
 ```
 
@@ -145,19 +145,19 @@ git push origin dev
 
 - **默认合并（默认策略）：**
 
-    ```sh
+    ```bash
     git config --global pull.rebase false
     ```
 
 - **默认变基：**
 
-    ```sh
+    ```bash
     git config --global pull.rebase true
     ```
 
 - **仅允许快进合并：**
 
-    ```sh
+    ```bash
     git config --global pull.ff only
     ```
 
@@ -176,7 +176,7 @@ git push origin dev
 >   - 在合并提交中，可能会引入额外的噪音，增加历史记录的复杂性。
 >
 > **示例：**
-> ```sh
+> ```bash
 > git checkout dev
 > git pull origin dev
 > ```
@@ -196,7 +196,7 @@ git push origin dev
 >   - 可能会引发冲突，需要手动解决。
 >
 > **示例：**
-> ```sh
+> ```bash
 > git checkout dev
 > git pull --rebase origin dev
 > ```
@@ -216,7 +216,7 @@ git push origin dev
 >   - 可能无法清楚地表示合并的实际过程。
 >
 > **示例：**
-> ```sh
+> ```bash
 > git checkout dev
 > git pull origin dev
 > ```
@@ -232,7 +232,7 @@ git push origin dev
 
 当选择快速合并策略之后，仍然遇到问题
 
-```shell
+```bash
 ➜  Code git:(dev) ✗ git config pull.ff only
 
 ➜  Code git:(dev) ✗ git pull origin dev
@@ -252,7 +252,7 @@ fatal: Not possible to fast-forward, aborting.
 
 如果希望手动合并分支，可以使用普通的合并（merge）策略。这会创建一个新的合并提交来整合分支：
 
-```sh
+```bash
 git pull origin dev --no-ff
 ```
 
@@ -262,20 +262,20 @@ git pull origin dev --no-ff
 
 变基可以将你的本地提交“重新播放”到远程分支的末端，这样可以保持提交历史线性，并且可能会让后续的快进合并变得可行：
 
-```sh
+```bash
 git fetch origin
 git rebase origin/dev
 ```
 
 这将会把本地分支的提交变基到远程 `dev` 分支上。如果变基过程中发生冲突，你需要解决这些冲突并继续变基：
 
-```sh
+```bash
 git rebase --continue
 ```
 
 完成变基后，你可以进行推送操作（如果需要）：
 
-```sh
+```bash
 git push origin dev
 ```
 
@@ -283,7 +283,7 @@ git push origin dev
 
 如果你确定本地分支的内容应该覆盖远程分支的内容（这可能会导致远程分支的丢失），你可以使用强制推送。请谨慎使用，因为这会覆盖远程分支上的内容：
 
-```sh
+```bash
 git push origin dev --force
 ```
 

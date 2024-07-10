@@ -10,7 +10,7 @@ Git 是一个[分布式版本控制系统](https://so.csdn.net/so/search?q=分�
 
 打开终端并运行以下 apt 命令以更新系统
 
-```shell
+```bash
 $ sudo apt update
 $ sudo apt upgrade -y
 ```
@@ -21,7 +21,7 @@ $ sudo apt upgrade -y
 
 使用以下命令在 Ubuntu 22.04 上安装 Git
 
-```shell
+```bash
 $ sudo apt install git
 ```
 
@@ -31,7 +31,7 @@ $ sudo apt install git
 
 安装 git 及其依赖项后，通过运行确认 Git 版本。
 
-```shell
+```bash
 $ git --version
 git version 2.34.1
 $
@@ -41,7 +41,7 @@ $
 
 替换以下 git 命令中的“name”和“email”配置值。
 
-```shell
+```bash
 $ git config --global user.name "Pradeep Kumar"
 $ git config --global user.email "pradeepantil@gmail.com"
 ```
@@ -52,7 +52,7 @@ $ git config --global user.email "pradeepantil@gmail.com"
 
 现在，让我们为项目创建一个新文件夹并初始化一个 Git存储库。
 
-```shell
+```bash
 $ mkdir project_code
 $ cd project_code
 $ git init
@@ -68,7 +68,7 @@ $ git init
 
 进行更改后，即可将其提交到 Git 存储库：
 
-```shell
+```bash
 $ git add .
 $ git commit -m "First Commit"
 ```
@@ -91,7 +91,7 @@ $ git commit -m "First Commit"
 
 从终端运行 ssh-keygen 命令。
 
-```shell
+```bash
 $ ssh-keygen
 ```
 
@@ -99,7 +99,7 @@ $ ssh-keygen
 
 运行下面的 cat 命令，查看公钥内容。
 
-```shell
+```bash
 $ cat ~/.ssh/id_rsa.pub
 ```
 
@@ -109,7 +109,7 @@ $ cat ~/.ssh/id_rsa.pub
 
 创建 GitHub 存储库 和 SSH 密钥后，按照页面上提供的说明将本地存储库连接到远程 GitHub 存储库。
 
-```shell
+```bash
 $ git remote add origin git@github.com:pradeepantil/project_code.git
 $ git remote -v
 ```
@@ -120,7 +120,7 @@ $ git remote -v
 
 最后，将本地更改推送到 GitHub 存储库，运行“git push”命令。
 
-```shell
+```bash
 $ git push -u origin master
 ```
 

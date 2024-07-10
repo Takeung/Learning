@@ -50,13 +50,13 @@ sudo apt install python3-dev python3-venv build-essential
 
 ### 1.2安装nodejs
 
-```
+```bash
 sudo apt-get install nodejs
 ```
 
 ### 1.3克隆typoraCraker项目
 
-```
+```bash
 git clone https://github.com/cnvetman/typoracracker.git
 ```
 
@@ -64,7 +64,7 @@ git clone https://github.com/cnvetman/typoracracker.git
 
 切换到克隆下来的项目根目录typoracracker下执行：
 
-```
+```bash
 pip3 install -r requirements.txt
 ```
 
@@ -76,7 +76,7 @@ pip3 install -r requirements.txt
 
 项目目录下有typora_1.0.3的deb包，执行下面命令直接安装即可。
 
-```
+```bash
 dpkg -i typora_1.0.3_amd64.deb
 ```
 
@@ -86,7 +86,7 @@ dpkg -i typora_1.0.3_amd64.deb
 
 可通过以下命令解包原生app.asar文件：
 
-```
+```bash
 python3 typora.py /usr/share/typora/resources/app.asar app_asar/  
 ```
 
@@ -96,13 +96,13 @@ python3 typora.py /usr/share/typora/resources/app.asar app_asar/
 
 修改`app_asar/dec_app`目录中的License.js；在typoraCracker项目下，提供有修改好的License.js，所以直接替换即可：
 
-```
+```bash
 cp example/patch/License.js app_asar/dec_app/
 ```
 
 ### 2.4生成app.asar
 
-```
+```bash
 python3 typora.py -u app_asar/dec_app app_asar
 ```
 
@@ -114,13 +114,13 @@ python3 typora.py -u app_asar/dec_app app_asar
 
 备份原生app.asar文件
 
-```
+```bash
 sudo cp /usr/share/typora/resources/app.asar /usr/share/typora/resources/app.asar.bak    
 ```
 
 用新生成的app.asar文件替换typora自带的app.asar文件
 
-```
+```bash
 sudo cp app_asar/app.asar /usr/share/typora/resources/app.asar
 ```
 
@@ -130,7 +130,7 @@ sudo cp app_asar/app.asar /usr/share/typora/resources/app.asar
 
 生成激活码
 
-```
+```bash
 node example/keygen.js
 ```
 

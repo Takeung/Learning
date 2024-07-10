@@ -8,7 +8,7 @@
 
 2、通过SSH登录Orin
 
-```
+```bash
 账号：ssh nvidia@172.26.1.131
 密码：nvidia
 ```
@@ -19,7 +19,7 @@
 
 3、启动Orin控制台界面
 
-```
+```bash
 sudo minicom -s
 ```
 
@@ -35,7 +35,7 @@ sudo minicom -s
 
 5、在minicom菜单界面选择Exit退出，之后输入下述指令下电
 
-```
+```bash
 ^^01010500000005$$
 ```
 
@@ -104,13 +104,13 @@ send_message(port, baudrate, message)
 
 首先需要通过scp将脚本文件上传到终端
 
-```
+```bash
 scp mcu_control_uart.py nvidia@172.26.1.131:/home/nvidia
 ```
 
 上传成功之后登录到终端，再执行下电指令
 
-```
+```bash
 sudo python3 mcu-control-uart.py 3
 ```
 

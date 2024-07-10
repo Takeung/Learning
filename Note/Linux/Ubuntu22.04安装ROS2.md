@@ -12,7 +12,7 @@
 
 官方案例自然地使用英文locale，但是根据文档描述只要是支持UTF-8的locale都可以。
 
-```
+```bash
 `sudo apt update && sudo apt install locales`
 `sudo locale-gen en_US en_US.UTF-8`
 `sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8`
@@ -27,20 +27,20 @@
 
 使用如下命令检查:
 
-```
+```bash
 apt-cache policy | grep universe
 ```
 
 返回可能有若干行，但是应该包含如下内容：
 
-```
+```bash
 500 http://us.archive.ubuntu.com/ubuntu jammy/universe amd64 Packages
     release v=22.04,o=Ubuntu,a=jammy,n=jammy,l=Ubuntu,c=universe,b=amd64
 ```
 
 如果没有包含上述内容，那么输入如下命令：
 
-```
+```bash
 sudo apt install software-properties-common
 sudo add-apt-repository universe
 ```
@@ -51,7 +51,7 @@ sudo add-apt-repository universe
 
 a) 添加证书
 
-```
+```bash
 sudo apt update && sudo apt install curl gnupg lsb-release
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 ```
@@ -60,13 +60,13 @@ sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o
 
 b) 添加ros仓库
 
-```
+```bash
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 ```
 
 ### 2.3 安装ros2包
 
-```
+```bash
 sudo apt update
 sudo apt upgrade
 sudo apt install ros-humble-desktop
@@ -78,7 +78,7 @@ sudo apt install ros-humble-desktop
 
 **解决方法**：先把 “/etc/apt/sources.list” 中的： http://cn.archive.ubuntu.com/ubuntu全部替换为可用的镜像，例如阿里云的：http://mirrors.aliyun.com/ubuntu/。然后使用
 
-```
+```bash
 sudo apt --fix-broken install
 ```
 
@@ -88,7 +88,7 @@ sudo apt --fix-broken install
 
 ### 2.4 配置环境变量
 
-```
+```bash
 source /opt/ros/humble/setup.bash
 echo " source /opt/ros/humble/setup.bash" >> ~/.bashrc 
 ```
@@ -97,7 +97,7 @@ echo " source /opt/ros/humble/setup.bash" >> ~/.bashrc
 
 打开第一个终端，启动一个数据的发布者节点：
 
-```
+```bash
 ros2 run demo_nodes_cpp talker
 ```
 
@@ -107,7 +107,7 @@ ros2 run demo_nodes_cpp talker
 
 打开第二个终端，启动一个数据的订阅者节点：
 
-```
+```bash
 ros2 run demo_nodes_py listener
 ```
 
