@@ -5,6 +5,11 @@
   - [VSCode：强大](#vscode强大)
     - [1. 下载 VSCode `.deb` 包](#1-下载-vscode-deb-包)
     - [2. 安装 `.deb` 包](#2-安装-deb-包)
+    - [3. 插件](#3-插件)
+        - [汉化插件](#汉化插件)
+        - [Python插件](#python插件)
+        - [看小说](#看小说)
+        - [股票](#股票)
   - [Chrome：核心](#chrome核心)
     - [1. 下载 Google Chrome `.deb` 包](#1-下载-google-chrome-deb-包)
     - [2. 安装 `.deb` 包](#2-安装-deb-包-1)
@@ -65,6 +70,42 @@ sudo dpkg -i path_to_your_file/code_*.deb
 sudo apt-get install -f  # 用于解决可能的依赖问题
 ```
 替换 `path_to_your_file` 为 `.deb` 文件的实际路径。
+
+### 3. 插件
+
+VsCode插件无奇不有，常用的是Python和C++插件。
+
+**Python**
+
+![image-20210909005232983](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210909005232983.png)
+
+**C++**
+
+![image-20210909005135905](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210909005135905.png)
+
+##### [汉化插件](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=汉化插件)
+
+![image-20210720135816630](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720135816630.png)
+
+##### [Python插件](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=python插件)
+
+![image-20210723125628815](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210723125628815.png)
+
+**听歌网易抑云**
+
+![image-20210720113510268](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720113510268.png)
+
+**背单词**
+
+![image-20210720135841441](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720135841441.png)
+
+##### [看小说](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=看小说)
+
+![image-20210720135941635](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720135941635.png)
+
+##### [股票](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=股票)
+
+![image-20210720140207445](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720140207445.png)
 
 ## Chrome：核心
 
