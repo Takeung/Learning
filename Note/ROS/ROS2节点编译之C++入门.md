@@ -232,6 +232,8 @@ clean:
 	rm first_node
 ```
 
+> 注意空格与TAB的字节数目差异。
+
 ### 2.3. 编译
 
 在Makefile同级目录输入
