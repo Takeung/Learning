@@ -2,6 +2,7 @@
 
 - [Ubuntu 22.04日常办公环境记录](#ubuntu-2204日常办公环境记录)
   - [Git：万物之基](#git万物之基)
+  - [Terminator：程序员必用终端](#terminator程序员必用终端)
   - [VSCode：强大](#vscode强大)
     - [1. 下载 VSCode `.deb` 包](#1-下载-vscode-deb-包)
     - [2. 安装 `.deb` 包](#2-安装-deb-包)
@@ -16,6 +17,7 @@
   - [Flameshot：截图](#flameshot截图)
     - [1. 更新软件包列表](#1-更新软件包列表)
     - [2. 安装 Flameshot](#2-安装-flameshot)
+  - [Meld：对比工具](#meld对比工具)
   - [Typora：码字神器](#typora码字神器)
   - [PicGo：图床](#picgo图床)
     - [1. 下载 PicGo 的 AppImage](#1-下载-picgo-的-appimage)
@@ -53,6 +55,14 @@
 
 
 ## [Git：万物之基](https://github.com/Takeung/Learning/blob/dev/Note/Git/Git%E2%80%94%E2%80%94%E5%9C%A8Ubuntu%2022.04%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%AE%89%E8%A3%85%E5%8F%8A%E9%85%8D%E7%BD%AE.md)
+
+## Terminator：程序员必用终端
+
+安装命令：
+
+```bash
+sudo apt-get install terminator
+```
 
 ## VSCode：强大
 
@@ -141,6 +151,32 @@ sudo apt install flameshot
 ```
 
 Flameshot依赖Qt5的一些库，初次配置时可能需要额外注意补充。
+
+## Meld：对比工具
+
+Meld是一个跨平台地、可视化地、对比及合并工具。它提供文件和目录的双向和三向比较，并支持许多流行的版本控制系统。
+
+Meld特点：
+
+- 文件和目录的双向和三向比较。
+- 文件比较随着你的输入而更新。
+- 自动合并模式和对变更块的操作有助于使合并更容易。
+- 可视化让你更容易比较你的文件。
+- 支持`Git, Bazaar, Mercurial, Subversion`等。
+
+输入如下命令即可安装：
+
+```
+sudo apt-get install meld
+```
+
+Meld很简单、易用且强大，大家可以自行去体验体验。
+
+![img](https://static.mianbaoban-assets.eet-china.com/xinyu-images/MBXY-CR-6c5bc0f8357d4a47ab538bdeb82795b5.png)
+
+![img](https://static.mianbaoban-assets.eet-china.com/xinyu-images/MBXY-CR-100ef5a0e4808b62625fb9c02fff46d1.png)
+
+除此之外，meld还能与git等版本控制系统结合使用。
 
 ## [Typora：码字神器](https://github.com/Takeung/Learning/blob/dev/Note/Linux/Ubuntu22.04%E6%BF%80%E6%B4%BBTypora.md)
 
