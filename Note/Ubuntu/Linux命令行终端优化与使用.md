@@ -1,6 +1,25 @@
 # Linux命令行终端优化与使用
 
-[TOC]
+- [Linux命令行终端优化与使用](#linux命令行终端优化与使用)
+  - [0 简述前言](#0-简述前言)
+  - [1 Bash终端美化](#1-bash终端美化)
+    - [1.1 环境安装](#11-环境安装)
+    - [1.2 bash-it 命令](#12-bash-it-命令)
+    - [1.3 aliases（别名）](#13-aliases别名)
+    - [1.4 completions（补全）](#14-completions补全)
+    - [1.5 plugins（插件）](#15-plugins插件)
+    - [1.6 search（搜索内容）](#16-search搜索内容)
+    - [1.7 Theme主题更改](#17-theme主题更改)
+    - [1.8 自定义定制](#18-自定义定制)
+  - [2 Zsh终端美化](#2-zsh终端美化)
+    - [2.1 安装流程](#21-安装流程)
+    - [2.2 zsh目录说明](#22-zsh目录说明)
+    - [2.3 zsh主题修改](#23-zsh主题修改)
+    - [2.4 插件安装](#24-插件安装)
+    - [2.5 WSL优化配置](#25-wsl优化配置)
+    - [2.6 CloudStudioIDE终端配置](#26-cloudstudioide终端配置)
+    - [2.7 VisualStudioCode](#27-visualstudiocode)
+
 
 > 摘自：https://cloud.tencent.com/developer/article/1729659
 
