@@ -45,33 +45,33 @@
 
 （1）安装 Bash-it 之前，首先需要确认的是系统中是否含有 git 命令
 
-```
+```bash
 $ which git
 /usr/bin/git
 ```
 
 如果没有采用操作系统的软件包管理器进行下载
 
-```
+```bash
 yum install -y git
 ```
 
 （2）使用 git 命令将 Bash-it 克隆到用户主目录下的 .bash_it 子目录：
 
-```
+```bash
 git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it
 ```
 
 （3）执行 install.sh 安装脚本来安装 Bash-it
 
-```
+```bash
 cd !$
 ./install.sh -s
 ```
 
 install.sh 脚本包括下列 3 个选项
 
-```
+```bash
 # 1.--interactive (-i)：这个选项允许我们交互式选择要启用哪些别名、自动补全和插件。
 # 2.--silent (-s)：静默安装，没有任何输入提示。
 # 3.--no-modify-config (-n)：不修改现有的 bash 配置文件 .bashrc 或.bash_profile。
@@ -84,7 +84,7 @@ install.sh 脚本包括下列 3 个选项
 
 （4）配置生效
 
-```
+```bash
 source ~/.bashrc
 # 2020-05-09 14：33：51 ⌚  vm-1575613390 in ~
 # ○ →
@@ -96,7 +96,7 @@ source ~/.bashrc
 
 基础语法：
 
-```javascript
+```bash
 bash-it ： Bash-it help and maintenance
 parameters：
     1： verb [one of： help | show | enable | disable | migrate | update | search | version | reload ]
@@ -120,16 +120,16 @@ examples：
 
 （1）查看启用的别名
 
-```javascript
+```bash
 bash-it show aliases | less
-#第一列为别名的名称，第二列显示该别名是否启用（启用的别名在 [] 中有 X），最后一列是有关别名的说明
+# 第一列为别名的名称，第二列显示该别名是否启用（启用的别名在 [] 中有 X），最后一列是有关别名的说明
 Alias               Enabled?  Description
 ag                    [ ] (未启用)    the silver searcher (ag) aliases
 ```
 
 （2）启动或者禁用别名
 
-```
+```bash
 $ bash-it enable alias  <alias name> [alias name]... -or- $ bash-it enable alias all
 $ bash-it disable alias <alias name> [alias name]... -or- $ bash-it disable alias all
 bash-it enable alias git
@@ -138,7 +138,7 @@ git enabled with priority 150.
 
 （3）查看到底有那些git 别名
 
-```
+```bash
 bash-it help aliases git | less
 # gca='git commit -v -a'
 # gcm='git commit -v -m'
@@ -209,7 +209,7 @@ bash-it disable alias gitsvn
 
 （1）查看启用了哪些自动补全
 
-```javascript
+```bash
 bash-it show completions | less
 # Completion          Enabled?  Description
 # apm                   [ ]
@@ -220,7 +220,7 @@ bash-it show completions | less
 
 （2）启动或者禁用自动补全(使用方式同上)
 
-```
+```bash
 $ bash-it enable completion  <completion name> [completion name]... -or- $ bash-it enable completion all
 $ bash-it disable completion <completion name> [completion name]... -or- $ bash-it disable completion all
 ```
@@ -231,7 +231,7 @@ $ bash-it disable completion <completion name> [completion name]... -or- $ bash-
 
 （1）查看启用了哪些插件
 
-```javascript
+```bash
 bash-it show plugins | less
 Plugin              Enabled?  Description
 alias-completion      [x]     Automatic completion of aliases
@@ -239,7 +239,7 @@ alias-completion      [x]     Automatic completion of aliases
 
 （2）启动或者禁用插件(使用方式同上)
 
-```
+```bash
 $ bash-it enable plugin  <plugin name> [plugin name]... -or- $ bash-it enable plugin all
 $ bash-it disable plugin <plugin name> [plugin name]... -or- $ bash-it disable plugin all
 ```
@@ -252,7 +252,7 @@ $ bash-it disable plugin <plugin name> [plugin name]... -or- $ bash-it disable p
 
 **示例1** 查看插件别名以及补全()
 
-```javascript
+```bash
 ○ → bash-it search base
       plugins：  base
  2020-05-09 15：50：36 ⌚  vm-1575613390 in ~
@@ -264,7 +264,7 @@ $ bash-it disable plugin <plugin name> [plugin name]... -or- $ bash-it disable p
 
 **示例2** 除了通过 bash-it enable 命令来启用别名、自动补全和插件外，我们也可以在搜索模块和组件时加以启用
 
-```
+```bash
 ~$ bash-it search git --enable
 # aliases： git gitsvn
 # plugins： autojump fasd git git-subrepo jgitflow jump  #本例中的gitsvn、jgitflow、git_flow 也一并启用了
@@ -277,20 +277,20 @@ $ bash-it disable plugin <plugin name> [plugin name]... -or- $ bash-it disable p
 
   - #问题 
 
-    ```
+    ```bash
     bash： alias： /usr/bin/egrep： not found 
     -bash： alias： -E： not found -bash： alias：    \[： not found  
     ```
 
     #解决方法
 
-    ```
+    ```bash
     unalise egrep
     ```
 
     2.可以通过下列命令来分别启用所有的别名、自动补全和插件
 
-  ```
+  ```bash
   bash−it enable alias all
   bash-it enable completion all
   ```
@@ -299,7 +299,7 @@ $ bash-it disable plugin <plugin name> [plugin name]... -or- $ bash-it disable p
 
 描述：Bash-it 随附了大约 50 多个提示符主题样式，如果想要看看这些主题的真实外观，那么我们可以执行下面的命令：
 
-```javascript
+```bash
 # 1.查看已存在的主题外观样式
 $ BASH_PREVIEW=true bash-it reload
 主题名称：zork
@@ -311,7 +311,7 @@ $ BASH_PREVIEW=true bash-it reload
 
 下面列举个人喜欢的主题：
 
-```
+```bash
 - powerline-multiline
 - powerline
 - modern-time
@@ -322,7 +322,7 @@ $ BASH_PREVIEW=true bash-it reload
 
 #2.更改主题我们需要直接编辑 .bashrc配置文件
 
-```
+```bash
 vim ~/.bashrc
 # Lock and Load a custom theme file.
 # Leave empty to disable theming.
@@ -333,7 +333,7 @@ export BASH_IT_THEME='zork'
 
 #3.为了使新设置的提示符主题生效，你需要关闭并重新打开终端，或者注销并重新登录
 
-```
+```bash
 source !$
 Ctrl+D
 ```
@@ -348,7 +348,7 @@ Ctrl+D
 
 路径和名称如下：
 
-```javascript
+```bash
 • aliases/custom.aliases.bash：别名
 • completion/custom.completion.bash：自动补全
 • lib/custom.bash：库
@@ -360,14 +360,14 @@ Ctrl+D
 
 **Step1.**首先，我们在 aliases 目录下使用文本编辑器（如 vim）创建 custom.aliases.bash文件
 
-```javascript
+```bash
 ~$ cd ~/.bash_it/aliases/available
 ~$ vim custom.aliases.bash
 ```
 
 **Step2.**接着添加具体的别名内容
 
-```javascript
+```bash
 #!/bin/bash
 cite 'about-alias'
 about-alias 'Custom aliases for convenience.'
@@ -378,7 +378,7 @@ alias up='uptime'
 
 **Step3.**利用以下命令来查看并启动
 
-```javascript
+```bash
 $ bash-it show aliase
 custom                [ ]     Custom aliases for convenience.
 
@@ -388,7 +388,7 @@ custom is already enabled.
 
 **Step4.**再重新加载一下配置以及效果查看
 
-```javascript
+```bash
 $ bash-it reload
 
 ┌─[root][vm-1575613390][±][maste][~/.bash_it/aliases/available]
@@ -406,14 +406,14 @@ $ bash-it reload
 
 查看系统当前的shell类型
 
-```javascript
+```bash
 $ echo $SHELL 
 /bin/bash
 ```
 
 查看系统是否安装了zsh
 
-```
+```bash
 $ cat /etc/shells 
 /bin/sh
 /bin/bash
@@ -427,7 +427,7 @@ $ cat /etc/shells
 
 安装zsh
 
-```
+```bash
 $ sudo apt-get install zsh
 $ yum -y install zsh
 $ brew install zsh # mac安装
@@ -435,13 +435,13 @@ $ brew install zsh # mac安装
 
 将zsh设置为默认shell
 
-```
+```bash
 chsh -s /bin/zsh # CentOS
 ```
 
 Mac如下在 /etc/shells 文件中加入如下一行
 
-```
+```bash
 /usr/local/bin/zsh  # 接着运行下面命令
 chsh -s /usr/local/bin/zsh
 ```
@@ -450,20 +450,21 @@ chsh -s /usr/local/bin/zsh
 
 1.自动安装
 
-```javascript
-wget https：//github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh #成功会出现oh-my-zsh界面结果
+```bash
+# 成功会出现oh-my-zsh界面结果
+wget https：//github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
 ```
 
 2.手动安装
 
-```
+```bash
 git clone git：//github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 ```
 
 ### 2.2 zsh目录说明
 
-```javascript
+```bash
 ~/.oh-my-zsh master  ls
 cache               CONTRIBUTING.md  lib          log           plugins(插件)    templates(主题模板)  tools
 CODE_OF_CONDUCT.md  custom(自定义模板)           LICENSE.txt  oh-my-zsh.sh  README.md  themes
@@ -473,20 +474,20 @@ CODE_OF_CONDUCT.md  custom(自定义模板)           LICENSE.txt  oh-my-zsh.sh 
 
 oh-my-zsh配置文件：`~/.zshrc`
 
-```javascript
+```bash
 $ls ~/.zshrc
 /home/ubuntu/.zshrc
 ```
 
 默认主题是robbyrussell（更多主题参考来源） 
 
-```
+```bash
 sed -r -i.bak 's#ZSH_THEME="[a-z].+"#ZSH_THEME="agnoster"#' ~/.zshrc
 ```
 
 更新配置：
 
-```
+```bash
 $ source ~/.zshrc
 ```
 
@@ -500,7 +501,7 @@ $ source ~/.zshrc
 
 将[此插件]()放到oh-my-zsh目录的插件库下：
 
-```javascript
+```bash
 $ mkdir ~/.oh-my-zsh/plugins/incr 
 $ wget http：//mimosa-pudica.net/src/incr-0.2.zsh -P ~/.oh-my-zsh/plugins/incr/
 
@@ -512,7 +513,7 @@ echo 'source ~/.oh-my-zsh/plugins/incr/incr*.zsh' >> ~/.zshrc
 
 注意：将目录切换到~/.oh-my-zsh/custom/plugins
 
-```javascript
+```bash
 #克隆插件到自定义插件目录之中
 git clone https：//github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM：-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
@@ -524,7 +525,7 @@ plugins=(git zsh-syntax-highlighting)
 
 进入终端设置（WSL的话，点击窗口左上角，然后属性）,其他lINUX有发行界面也同样，修改字体为FiraCode Retina。
 
-```javascript
+```bash
 https：//raw.githubusercontent.com/tonsky/FiraCode/master/distr/ttf/FiraCode-Retina.ttf  #安装字体 FiraCode （浏览器可以不进中英文切换）
 https：//github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf # （浏览器需要进行中英文切换）
 https：//github.com/abertsch/Menlo-for-Powerline.git #优先建议使用(宽字节可使用)
@@ -549,7 +550,7 @@ WSL安装后的目录位置：`C：\Users\用户名\AppData\Local\Packages\Canon
 
 *WSL初步配色调料包：*
 
-```javascript
+```bash
 字体：consolas
 字体大小：24
 屏幕文字颜色：220 220 220
@@ -559,7 +560,7 @@ WSL安装后的目录位置：`C：\Users\用户名\AppData\Local\Packages\Canon
 
 WSL采用Solarized配色调料包：
 
-```javascript
+```bash
 背景rgb（0，43，53）
 文字rgb(147,161,161)
 ```
@@ -568,7 +569,7 @@ WSL的主题配色临时工具：ColorTool
 
 可能未来的新终端里就会集成主题功能了这个工具貌似是可以使用那些iTerm2上的漂亮主题
 
-```javascript
+```bash
 github源码：https：//github.com/Microsoft/Terminal/tree/master/src/tools/ColorTool
 github下载：https：//github.com/microsoft/terminal/releases/tag/1904.29002
 #后解压缩得到一个ColorTool.exe以及一个schemes主题文件夹
@@ -582,7 +583,7 @@ github下载：https：//github.com/microsoft/terminal/releases/tag/1904.29002
 
 1.设置agnoster.zsh-theme的显示样式，不显示用户和主机名称：
 
-```javascript
+```bash
 echo 'DEFAULT_USER="ubuntu"' >> ~/.zshrc  #改成当前登录用户名字即可
 ```
 
@@ -590,13 +591,13 @@ echo 'DEFAULT_USER="ubuntu"' >> ~/.zshrc  #改成当前登录用户名字即可
 
 #操作1.将原本的主题文件复制一份更改（为了以后方便升级）
 
-```javascript
+```bash
 cp ~/.oh-my-zsh/themes/agnoster.zsh-theme ~/.oh-my-zsh/custom/themes/agnoster_wsl.zsh-theme
 ```
 
 #操作2.修改blue颜色 
 
-```
+```bash
 # Dir： current working directory 201 line
 prompt_dir() {
   #将blue改成075
@@ -611,7 +612,7 @@ prompt_dir() {
 
 #操作3.由于我们修改了主题名称，还需要去刚才的.zshrc配置文件修改主题为agnoster_wsl。这样，重启WSL就大功告成了。
 
-```
+```bash
 sed -r -i.bak 's#ZSH_THEME="[a-z].+"#ZSH_THEME="agnoster"#' ~/.zshrc
 ```
 
@@ -627,7 +628,7 @@ sed -r -i.bak 's#ZSH_THEME="[a-z].+"#ZSH_THEME="agnoster"#' ~/.zshrc
 
 **Step1.**需要进行系统字体的环境设置
 
-```javascript
+```bash
 sudo apt-get install fonts-powerline
 # clone
 git clone https：//github.com/powerline/fonts.git --depth=1
@@ -638,7 +639,7 @@ cd fonts
 
 **Step2.**下载指定的字体以及依赖，Liunx字体设置由于我们是从网页上显示，最好在客户端也进行安装字体
 
-```javascript
+```bash
 wget https：//github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
 mv PowerlineSymbols.otf ~/.local/share/fonts/
 fc-cache -vf ~/.local/share/fonts/  #更新字体缓存
@@ -668,7 +669,7 @@ fc-cache -vf ~/.local/share/fonts/  #更新字体缓存
 
 描述：为了让VScode终端正确的显示zsh的主题agnoster，在我们本地的VisualStudioCode进行选择我们安装的字体，让终端更能方便的显示;
 
-```javascript
+```bash
 #Ubuntu系统进行安装字体
 $cd /usr/share/fonts/truetype/
 $sudo git clone https：//github.com/abertsch/Menlo-for-Powerline.git
@@ -691,7 +692,7 @@ fc-cache： succeeded
 
 其他设置：
 
-```javascript
+```bash
 #vscode进行设置终端字体
 "editor.fontFamily"： "Consolas, 'Courier New', monospace",
 "editor.fontLigatures"： false,
