@@ -76,6 +76,7 @@
 - [2 生命周期节点](#2-生命周期节点)
   - [2.1 生命周期节点介绍](#21-生命周期节点介绍)
 
+> （摘自：[动手学ROS](https://fishros.com/d2lros2/#/humble/chapt3/%E7%AB%A0%E8%8A%82%E5%AF%BC%E8%AF%BB)）
 
 # 基础篇——控制概述
 
@@ -409,7 +410,7 @@ this->get_logger().set_level(log_level);
 我们创建一个功能包和测试节点，声明参数并实现动态修改打印的日志级别功能。
 
 ```bash
-mkdir -p chapt4/chapt4_ws/
+mkdir -p chapt4_ws/
 ros2 pkg create example_parameters_rclcpp --build-type ament_cmake --dependencies rclcpp --destination-directory src --node-name parameters_basic
 ```
 
@@ -577,7 +578,7 @@ ros2 param set /parameters_basic rcl_log_level 10
 ### 3.1 创建功能包和节点
 
 ```bash
-cd chapt4/chapt4_ws/
+cd chapt4_ws/
 ros2 pkg create example_parameters_rclpy --build-type ament_python --dependencies rclpy --destination-directory src --node-name parameters_basic
 ```
 

@@ -139,8 +139,9 @@
       - [4.1.3 执行例程](#413-执行例程)
       - [4.1.4 查看结果](#414-查看结果)
 
-
-（摘自：[动手学ROS](https://fishros.com/d2lros2/#/humble/chapt3/%E7%AB%A0%E8%8A%82%E5%AF%BC%E8%AF%BB)）
+>
+> （摘自：[动手学ROS](https://fishros.com/d2lros2/#/humble/chapt3/%E7%AB%A0%E8%8A%82%E5%AF%BC%E8%AF%BB)）
+>
 
 # 基础篇——中间件与面向对象基础
 
@@ -384,8 +385,8 @@ RCLCPP为Node类提供了丰富的API接口，其中就包括创建话题发布�
 
 ```bash
 cd d2lros2/
-mkdir -p chapt3/chapt3_ws/src
-cd chapt3/chapt3_ws/src
+mkdir -p chapt3_ws/src
+cd chapt3_ws/src
 ros2 pkg create example_topic_rclcpp --build-type ament_cmake --dependencies rclcpp
 touch example_topic_rclcpp/src/topic_publisher_01.cpp
 ```
@@ -451,7 +452,7 @@ install(TARGETS
 接着可以编译测试下，注意运行colcon的目录。
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 colcon build --packages-select example_topic_rclcpp
 source install/setup.bash
 ros2 run example_topic_rclcpp topic_publisher_01
@@ -489,7 +490,7 @@ ros2 run example_topic_rclcpp topic_publisher_01
 
 `CMakeLists.txt`
 
-```camke
+```cmake
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
@@ -641,7 +642,7 @@ string data
 编译，source，运行
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 colcon build --packages-select example_topic_rclcpp
 source install/setup.bash
 ros2 run example_topic_rclcpp topic_publisher_01
@@ -714,7 +715,7 @@ topic_subscribe_01
 编译测试
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 colcon build --packages-select example_topic_rclcpp
 source install/setup.bash
 ros2 run example_topic_rclcpp topic_subscribe_01
@@ -775,7 +776,7 @@ ament_target_dependencies(topic_subscribe_01 rclcpp std_msgs)
 编译运行订阅节点
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 colcon build --packages-select example_topic_rclcpp
 source install/setup.bash
 ros2 run example_topic_rclcpp topic_subscribe_01
@@ -794,7 +795,7 @@ ros2 topic pub /command std_msgs/msg/String "{data: forward}"
 关闭上面启动的终端，重新运行指令
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 source install/setup.bash
 ros2 run example_topic_rclcpp topic_subscribe_01
 ```
@@ -802,7 +803,7 @@ ros2 run example_topic_rclcpp topic_subscribe_01
 运行发布节点
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 source install/setup.bash
 ros2 run example_topic_rclcpp topic_publisher_01
 ```
@@ -828,7 +829,7 @@ ros2 run example_topic_rclcpp topic_publisher_01
 创建功能包
 
 ```bash
-cd chapt3/chapt3_ws/src/
+cd chapt3_ws/src/
 ros2 pkg create example_topic_rclpy  --build-type ament_python --dependencies rclpy
 ```
 
@@ -937,7 +938,7 @@ class NodePublisher02(Node):
 #### 3.4.1 发布节点
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 source install/setup.bash
 ros2 run example_topic_rclpy topic_publisher_02
 ```
@@ -945,7 +946,7 @@ ros2 run example_topic_rclpy topic_publisher_02
 #### 3.4.2 订阅节点
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 source install/setup.bash
 ros2 run example_topic_rclpy topic_subscribe_02
 ```
@@ -1066,7 +1067,7 @@ ros2 service find example_interfaces/srv/AddTwoInts
 ### 5.1 创建功能包和节点
 
 ```bash
-cd chapt3/chapt3_ws/src
+cd chapt3_ws/src
 ros2 pkg create example_service_rclcpp --build-type ament_cmake --dependencies rclcpp
 touch example_service_rclcpp/src/service_server_01.cpp
 touch example_service_rclcpp/src/service_client_01.cpp
@@ -1145,7 +1146,7 @@ install(TARGETS
 完成上面的步骤，即可编译测试了。
 
 ```bash
-cd chapt3/chapt3_ws/
+cd chapt3_ws/
 colcon build --packages-select example_service_rclcpp
 
 # 运行 service_server_01
@@ -1430,7 +1431,7 @@ ros2 run example_service_rclcpp service_server_01
 创建功能包其实还可以加上一些参数`--node-name 节点名`，让这个过程变得更简单。
 
 ```bash
-cd chapt3/chapt3_ws/src
+cd chapt3_ws/src
 ros2 pkg create example_service_rclpy --build-type ament_python --dependencies rclpy example_interfaces  --node-name service_server_02
 ```
 
