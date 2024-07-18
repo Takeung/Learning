@@ -7,10 +7,6 @@
     - [1. 下载 VSCode `.deb` 包](#1-下载-vscode-deb-包)
     - [2. 安装 `.deb` 包](#2-安装-deb-包)
     - [3. 插件](#3-插件)
-        - [汉化插件](#汉化插件)
-        - [Python插件](#python插件)
-        - [看小说](#看小说)
-        - [股票](#股票)
   - [Chrome：核心](#chrome核心)
     - [1. 下载 Google Chrome `.deb` 包](#1-下载-google-chrome-deb-包)
     - [2. 安装 `.deb` 包](#2-安装-deb-包-1)
@@ -85,21 +81,17 @@ sudo apt-get install -f  # 用于解决可能的依赖问题
 
 VsCode插件无奇不有，常用的是Python和C++插件。
 
-**Python**
+**[Python插件](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=python插件)**
 
-![image-20210909005232983](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210909005232983.png)
+![image-20210723125628815](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210723125628815.png)
 
 **C++**
 
 ![image-20210909005135905](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210909005135905.png)
 
-##### [汉化插件](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=汉化插件)
+**[汉化插件](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=汉化插件)**
 
 ![image-20210720135816630](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720135816630.png)
-
-##### [Python插件](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=python插件)
-
-![image-20210723125628815](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210723125628815.png)
 
 **听歌网易抑云**
 
@@ -109,13 +101,41 @@ VsCode插件无奇不有，常用的是Python和C++插件。
 
 ![image-20210720135841441](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720135841441.png)
 
-##### [看小说](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=看小说)
+**[看小说](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=看小说)**
 
 ![image-20210720135941635](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720135941635.png)
 
-##### [股票](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=股票)
+**[股票](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=股票)**
 
 ![image-20210720140207445](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720140207445.png)
+
+**CMake插件**
+
+![](https://s2.loli.net/2024/07/18/xDNpcEF3RQIwdmo.png)
+
+**vscode-icons**
+
+![](https://s2.loli.net/2024/07/18/6BxLhbeSz75AyTi.png)
+
+**ROS插件**
+
+![image-20240718180640939](/home/tyjt/.config/Typora/typora-user-images/image-20240718180640939.png)
+
+**Msg Language Support**
+
+![](https://s2.loli.net/2024/07/18/BigZ3cxtzPENV4F.png)
+
+**IntelliCode**
+
+![](https://s2.loli.net/2024/07/18/Q6xWbEFPG3NZvgY.png)
+
+**URDF**
+
+![](https://s2.loli.net/2024/07/18/WHUnv7sPLgtpx2u.png)
+
+**Markdown All in One**
+
+![](https://s2.loli.net/2024/07/18/I6ksuSXzTKcp3NA.png)
 
 ## Chrome：核心
 
