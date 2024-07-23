@@ -89,6 +89,10 @@ VsCode插件无奇不有，常用的是Python和C++插件。
 
 ![image-20210909005135905](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210909005135905.png)
 
+CodeRunner
+
+![](https://s2.loli.net/2024/07/23/3ICvuHcNUpoXQ1L.png)
+
 **[汉化插件](https://fishros.com/d2lros2/#/humble/chapt1/basic/5.玩转Ubuntu之常用软件?id=汉化插件)**
 
 ![image-20210720135816630](https://fishros.com/d2lros2/humble/chapt1/basic/5.%E7%8E%A9%E8%BD%ACUbuntu%E4%B9%8B%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/imgs/image-20210720135816630.png)

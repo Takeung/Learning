@@ -59,15 +59,17 @@ strings = [
     "^^01030500000007$$",
     "^^01050500000001$$",
     "^^01020500000006$$",
-    "^^01010500000005$$"
+    "^^01010500000005$$",
+    "^^01060500000002$$",
+    "^^01070500000003$$"
 ]
-print('选择0:给Nx单独下电指令\n选择1:给Nx单独上电指令\n选择2:给ORIN下电指令\n选择3:给MCU下电指令')
+print('选择0:给Nx单独下电指令\n选择1:给Nx单独上电指令\n选择2:给ORIN下电指令\n选择3:给MCU下电指令\n选择4:给毫米波雷达下电指令\n选择5:给摄像头下电指令')
 
 # 设置argparse
 
 parser = argparse.ArgumentParser(description='通过串口发送指定字符串')
-parser.add_argument('string_index', type=int, choices=range(4),
-                    help='选择要发送的字符串的索引 (0, 1, 2, 3)')
+parser.add_argument('string_index', type=int, choices=range(6),
+                    help='选择要发送的字符串的索引 (0, 1, 2, 3, 4, 5)')
 
 # 解析命令行参数
 
