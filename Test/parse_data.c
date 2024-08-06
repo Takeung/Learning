@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 
 int charToHex(char c) {
     if (c >= '0' && c <= '9') {
@@ -21,42 +22,19 @@ uint8_t calculateChecksum(const char *data, size_t length) {
 
 // 解析串口数据的函数
 void parseSerialData(const char *data) {
-    int length = strlen(data);
+    size_t length = strlen(data);
     if (length < 18) { // 确保数据长度足够
         printf("Received data is too short to be valid.\n");
         return;
     }
-    
-    char copied_data[18];
-    int valid_copied_data = 0;
-    
-    for (int data_id = 0; data_id < 18; data_id++) {
-      if ((data[data_id] == '^') && (data[data_id + 1] == '^')) {
-        for (int copied_id = 0; copied_id < 18; copied_id++) {
-          copied_data[copied_id] = data[data_id + copied_id];
-        }
-        valid_copied_data = 1;
-        break;
-      }
-    }
-    if (!valid_copied_data) {
-      printf("Valid frame header not found!");
-      return;
-    }
-    
-    printf("Input command is: ");
-    for (int copied_id = 0; copied_id < 18; copied_id++) {
-      printf("%c", copied_data[copied_id]);
-    }
-    printf("\n");
 
     // 跳过开始标识和结束标识，开始解析
-    const char *payload = copied_data + 2; // 跳过 `^^`
-    size_t payloadLength = 18 - 4; // 减去 `^^` 和 `$$`
+    const char *payload = data + 2; // 跳过 `^^`
+    size_t payloadLength = length - 4; // 减去 `^^` 和 `$$`
 
     // 计算实际数据的校验和
     uint8_t expectedChecksum = charToHex(payload[payloadLength - 2]) * 16 + charToHex(payload[payloadLength - 1]);
-    uint8_t calculatedChecksum = calculateChecksum(copied_data, 18);
+    uint8_t calculatedChecksum = calculateChecksum(data, length);
 
     if (calculatedChecksum != expectedChecksum) {
         printf("Checksum mismatch. Expected: 0x%02X, Calculated: 0x%02X\n", expectedChecksum, calculatedChecksum);
@@ -74,7 +52,7 @@ int main()
 {
 	// char g_uart_in_data[] = "^^01060500000002$$";
 	// uint8_t g_uart_in_data[] = "^^01070500000003$$";
-	uint8_t g_uart_in_data[] = "111^^01010500000005$$";
+	uint8_t g_uart_in_data[] = "^^0109050000000D$$";
 	parseSerialData(&g_uart_in_data[0]);
 	
 	return 0;
