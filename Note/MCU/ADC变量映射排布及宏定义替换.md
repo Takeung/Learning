@@ -21,7 +21,7 @@ SOC_Printf("\rN20527938 result = %0.2f V\r\n", g_adc_voltage_all[16]);
 
 替换宏定义`cpress-traveo_ii-bsp_freertos/tviibh8m/hdr/rev_c/bb_bsp_tviibh8m.h`
 
-```
+```c
 #define CY_ADC_POT_MACRO1                        PASS0_SAR0
 #define CY_ADC_POT_IN_NO1                   CY_ADC_PIN_ADDRESS_AN24
 #define CY_ADC_POT_PORT1                         GPIO_PRT8
@@ -192,5 +192,15 @@ SOC_Printf("\rN20527938 result = %0.2f V\r\n", g_adc_voltage_all[16]);
 ************************* SCB8_UART_RECEIVE ************************
 ************************* SCB9_UART_RECEIVE ************************
 *************************** Exit OTA mode **************************
+
+***************** T24DG26-R2.0-MCU-V1.0.0.0.A_ORIN *****************
+************** T24DG26-R2.0-MCU-V1.0.0.0.aaaaaaaaaaaaa *************
+***************** T24DG26-R2.0-MCU-V1.0.0.0.B_ORIN *****************
+************** T24DG26-R2.0-MCU-V1.0.0.0.BBBBBBBBBBBBB *************
+
+********************* T24DG26-R2.0-MCU-V1.0.0.0 ********************
+
+**************************** PWM_Init ******************************
+*********************** user_udp_server_init ***********************
 ```
 
