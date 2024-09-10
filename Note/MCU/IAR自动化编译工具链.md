@@ -8,7 +8,8 @@
   - [2 关键问题记录](#2-关键问题记录)
     - [2.1 config识别错误](#21-config识别错误)
     - [2.2 varfile未添加](#22-varfile未添加)
-    - [3 补充材料](#3-补充材料)
+    - [2.3 IAR同时编译输出HEX和BIN文件](#23-iar同时编译输出hex和bin文件)
+  - [3 补充材料](#3-补充材料)
 
 
 ### 0 前言
@@ -45,7 +46,8 @@ iarbuild project.ewp [ -clean | -build | -make | -cstat_analyze |  -cstat_clean]
 
 ### 1 使用编译工具链
 
-文本替换部分依赖于sed库，使用方法简介如下
+- 文本替换部分依赖于sed库，使用方法简介如下
+
 
 > ```shell
 > sed -i 's/{ecm_db_port}/'"${DATABASE_PORT}"'/g' "${CANAL_ADAPTER_CONF_DIR}/${WORKFLOW_CONF_ADAPTER_FILE}"
@@ -89,7 +91,8 @@ iarbuild project.ewp [ -clean | -build | -make | -cstat_analyze |  -cstat_clean]
 >
 > 3、重新打开命令窗口，输入`sed`就能直接使用了
 
-文件格式`Srec-Bin`转换工具`srec_cat.exe`需要另外下载配置，目前直接放在`IarBuild.exe`同一路径下。
+- **【不再需要】**文件格式`Srec-Bin`转换工具`srec_cat.exe`需要另外下载配置，目前直接放在`IarBuild.exe`同一路径下。
+- 自动化编译工具依赖于正确输出BIN文件，而调试烧录需要使用HEX格式的应用文件，所以为了兼顾两方需求而避免频繁修改IAR工程配置，所以增加编译后处理程序，能够将正确编译得到的输出文件转换为所需的两种格式，具体操作流程参见2.3小节。
 
 编写自动化编译批处理脚本如下：
 
@@ -101,7 +104,6 @@ set startTime=%time%
 
 REM IAR编译和Srec-Bin转换工具
 set IarBuild="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\IarBuild.exe"
-set SrecCat="C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.4\common\bin\srec_cat.exe"
 
 REM 项目工程和依赖文件路径
 set Cm0Ewp=%CD%\tviibh8m\tools\iar\flash\cm0plus_cm7_0_cm7_1\cm0plus.ewp
@@ -156,19 +158,6 @@ if %foundA%==1 (
 %IarBuild% %Cm71Ewp% -clean rev_c
 %IarBuild% %Cm71Ewp% -make rev_c -log warnings -parallel 4 -varfile %Cm71VarFile%
 
-if %foundA%==1 (
-    @echo Generate the A-partition bin file from srec
-) else if %foundB%==1 (
-    @echo Generate the B-partition bin file from srec
-) else (
-    echo No matching definitions found
-    exit /b
-)
-
-%SrecCat% %src_cm0plus_Path%cm0plus.srec -crop 0x10000000 0x1007FFFF -offset -0x10000000 -o cm0plus_app.bin -binary
-%SrecCat% %src_cm7_0_Path%cm7_0.srec -crop 0x10080000 0x1027FFFF -offset -0x10080000 -o cm7_0_app.bin -binary
-%SrecCat% %src_cm7_1_Path%cm7_1.srec -crop 0x10280000 0x1029BBFE -offset -0x10280000 -o cm7_1_app.bin -binary
-
 if not exist %OutputOrinA%\ (
     mkdir %OutputOrinA%\
 )
@@ -177,9 +166,9 @@ if not exist %OutputOrinB%\ (
 )
 
 if %foundA%==1 (
-    copy %CD%\cm0plus_app.bin %OutputOrinA%\cm0plus_app.bin
-    copy %CD%\cm7_0_app.bin %OutputOrinA%\cm7_0_app.bin
-    copy %CD%\cm7_1_app.bin %OutputOrinA%\cm7_1_app.bin
+    copy %src_cm0plus_Path%\cm0plus_app.bin %OutputOrinA%\cm0plus_app.bin
+    copy %src_cm7_0_Path%\cm7_0_app.bin %OutputOrinA%\cm7_0_app.bin
+    copy %src_cm7_1_Path%\cm7_1_app.bin %OutputOrinA%\cm7_1_app.bin
     @echo.
     echo Switch to the B partition code
     sed -i "s/#define CURRENT_PARTITION 'A'/#define CURRENT_PARTITION 'B'/" %Cm0FilePath%
@@ -187,9 +176,9 @@ if %foundA%==1 (
     @echo.
     @echo Compile the B-partition code using the IAR toolchain
 ) else if %foundB%==1 (
-    copy %CD%\cm0plus_app.bin %OutputOrinB%\cm0plus_app.bin
-    copy %CD%\cm7_0_app.bin %OutputOrinB%\cm7_0_app.bin
-    copy %CD%\cm7_1_app.bin %OutputOrinB%\cm7_1_app.bin
+    copy %src_cm0plus_Path%\cm0plus_app.bin %OutputOrinB%\cm0plus_app.bin
+    copy %src_cm7_0_Path%\cm7_0_app.bin %OutputOrinB%\cm7_0_app.bin
+    copy %src_cm7_1_Path%\cm7_1_app.bin %OutputOrinB%\cm7_1_app.bin
     @echo.
     echo Switch to the A partition code
     sed -i "s/#define CURRENT_PARTITION 'B'/#define CURRENT_PARTITION 'A'/" %Cm0FilePath%
@@ -209,26 +198,13 @@ if %foundA%==1 (
 %IarBuild% %Cm71Ewp% -make rev_c -log warnings -parallel 4 -varfile %Cm71VarFile%
 
 if %foundA%==1 (
-    @echo Generate the B-partition bin file from srec
+    copy %src_cm0plus_Path%\cm0plus_app.bin %OutputOrinB%\cm0plus_app.bin
+    copy %src_cm7_0_Path%\cm7_0_app.bin %OutputOrinB%\cm7_0_app.bin
+    copy %src_cm7_1_Path%\cm7_1_app.bin %OutputOrinB%\cm7_1_app.bin
 ) else if %foundB%==1 (
-    @echo Generate the A-partition bin file from srec
-) else (
-    echo No matching definitions found
-    exit /b
-)
-
-%SrecCat% %src_cm0plus_Path%cm0plus.srec -crop 0x10000000 0x1007FFFF -offset -0x10000000 -o cm0plus_app.bin -binary
-%SrecCat% %src_cm7_0_Path%cm7_0.srec -crop 0x10080000 0x1027FFFF -offset -0x10080000 -o cm7_0_app.bin -binary
-%SrecCat% %src_cm7_1_Path%cm7_1.srec -crop 0x10280000 0x1029BBFE -offset -0x10280000 -o cm7_1_app.bin -binary
-
-if %foundA%==1 (
-    copy %CD%\cm0plus_app.bin %OutputOrinB%\cm0plus_app.bin
-    copy %CD%\cm7_0_app.bin %OutputOrinB%\cm7_0_app.bin
-    copy %CD%\cm7_1_app.bin %OutputOrinB%\cm7_1_app.bin
-) else if %foundB%==1 (
-    copy %CD%\cm0plus_app.bin %OutputOrinA%\cm0plus_app.bin
-    copy %CD%\cm7_0_app.bin %OutputOrinA%\cm7_0_app.bin
-    copy %CD%\cm7_1_app.bin %OutputOrinA%\cm7_1_app.bin
+    copy %src_cm0plus_Path%\cm0plus_app.bin %OutputOrinA%\cm0plus_app.bin
+    copy %src_cm7_0_Path%\cm7_0_app.bin %OutputOrinA%\cm7_0_app.bin
+    copy %src_cm7_1_Path%\cm7_1_app.bin %OutputOrinA%\cm7_1_app.bin
 ) else (
     echo No matching definitions found
     exit /b
@@ -289,7 +265,39 @@ Tools -> Configure Custom Argument Variables...
 
 > 参考：[[IAR\] 编译报错:Variable expansion failed for Pre-Build command line](https://www.cnblogs.com/xuejiangqiang/p/17516544.html)
 
-### 3 补充材料
+### 2.3 [IAR同时编译输出HEX和BIN文件](https://blog.csdn.net/Alenfun/article/details/134788977)
+
+- Options->Build Actions -> Post-build command line 输入：
+
+```shell
+$PROJ_DIR$\post-build.bat "$TARGET_BPATH$"
+```
+
+![](https://s2.loli.net/2024/09/09/r8UY2lukHqIVBNb.png)
+
+- 将post-build.bat文件放在工程目录下, post-build.bat内容如下：
+
+```shell
+set OUT=%1.out
+set HEX=%1.hex
+@REM 保持命名一致性
+set BIN=%1_app.bin
+
+:: calculate application checksum
+ielftool --fill 0xFF;0x0-0xfffb --checksum __checksum:2,crc16,0x0;0x0-0xfffb --verbose %OUT% %OUT%
+
+:: generate additional output: hex
+ielftool.exe --ihex --verbose %OUT% %HEX%
+
+:: generate additional output: binary
+ielftool.exe --bin --verbose %OUT% %BIN%
+```
+
+- 编译工程，输出文件即有HEX和BIN文件
+
+> 注：本项目中涉及到的三个工程都需要做此配置。
+
+## 3 补充材料
 
 > ### 降低Build时间
 >
