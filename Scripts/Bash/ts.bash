@@ -1,0 +1,1 @@
+cat /dev/mcu-gpio4 | ts '%Y-%m-%d %H:%M:%S.%N'
