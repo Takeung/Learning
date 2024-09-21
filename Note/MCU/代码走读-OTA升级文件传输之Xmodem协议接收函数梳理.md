@@ -3,6 +3,173 @@
 ## 接收方
 
 ```c
+/*****************************************************************************
+* Local pre-processor symbols/macros ('define')
+*****************************************************************************/
+#define _inbyte xmodem_read_byte
+#define _outbyte xmodem_write_byte
+
+#define SOH  0x01
+#define STX  0x02
+#define EOT  0x04
+#define ACK  0x06
+#define NAK  0x15
+#define CAN  0x18
+
+#define DLY_20S 20000
+#define MAXRETRANS 25
+
+#define USER_LED_PORT           CY_LED0_PORT
+#define USER_LED_PIN            CY_LED0_PIN
+#define USER_LED_PIN_MUX        CY_LED0_PIN_MUX
+
+/*****************************************************************************
+* Local variable definitions ('static')
+*****************************************************************************/
+static uint32_t totalSize = 0;
+static uint8_t xbuff[1030]; /* 1024 for XModem 1k + 3 head chars + 2 crc + nul */
+
+static uint32_t flushcharcount = 0;
+static uint8_t flushbuff[1030];
+
+/*****************************************************************************
+* Local function prototypes ('static')                                                                            
+*****************************************************************************/
+static int xmodem_read_byte(int16_t timeout_ms);
+static void xmodem_write_byte(uint8_t c);
+static void xmodem_flushinput(void);
+static unsigned short xmodem_crc16_ccitt(const uint8_t *buf, int sz);
+static uint8_t xmodem_check(uint8_t crc_mode, const uint8_t *buf, int sz);
+static uint8_t xmodem_flashWrite(uint8_t *data, uint32_t start_addr, uint32_t len);
+
+/*****************************************************************************
+* Function implementation - global ('extern') and local ('static')
+*****************************************************************************/
+static int xmodem_read_byte(int16_t timeout_ms)
+{
+    uint8_t u8ReadBuf;
+    uint16_t u16ReadCnt;
+    
+    // Receive data from UART asynchrnously (Non-blocking)
+    for (;;) 
+    {
+        if (1UL == Cy_SCB_UART_GetArray(User_USB_SCB8_TYPE, &u8ReadBuf, 1)) 
+        {
+            u16ReadCnt = 1;
+            break;
+        }
+        
+        if (timeout_ms-- <= 0)
+        {
+            u16ReadCnt = 0;
+            break;
+        }
+    }
+    
+    return ((u16ReadCnt == 0) ? -1 : u8ReadBuf);
+}
+
+static void xmodem_write_byte(uint8_t c)
+{    
+    Cy_SCB_UART_PutArray(User_USB_SCB8_TYPE, &c, 1);  
+}
+
+static void xmodem_flushinput(void)
+{
+    int c;
+    // flush and wait for 3 second without data received
+    flushcharcount = 0;
+    
+    while ((c=_inbyte(DLY_20S)) >= 0)
+    {
+        if (flushcharcount < 1030) 
+        {
+            flushbuff[flushcharcount] = c;
+        }
+        flushcharcount++;
+    }
+}
+
+static uint16_t xmodem_crc16_ccitt(const uint8_t *buf, int sz)
+{
+    unsigned short crc = 0;
+    while (--sz >= 0) {
+        int i;
+        crc ^= (uint16_t) *buf++ << 8;
+        for (i = 0; i < 8; i++)
+            if (crc & 0x8000)
+                crc = crc << 1 ^ 0x1021;
+            else
+                crc <<= 1;        
+    }
+    return crc;
+}
+
+static uint8_t xmodem_check(uint8_t crc_mode, const uint8_t *buf, int sz)
+{
+    if (crc_mode) { // CRC mode
+        uint16_t crc = xmodem_crc16_ccitt(buf, sz);
+        uint16_t tcrc = (buf[sz]<<8)+buf[sz+1];
+        if (crc == tcrc)
+        {
+            return true;
+        }
+    }
+    else { // checksum mode
+        int i;
+        uint8_t cks = 0;
+        for (i = 0; i < sz; ++i) {
+            cks += buf[i];
+        }
+        if (cks == buf[sz])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+static uint8_t xmodem_flashWrite(uint8_t *data, uint32_t start_addr, uint32_t len)
+{
+    uint8_t ret;
+    unsigned short crc1;
+    unsigned short crc2;
+    uint32_t* pProgramData;
+
+    //Programming code flash
+    Cy_FlashInit(false /*blocking*/);   
+
+    pProgramData = (uint32_t*)data; 
+
+    for(uint32_t i_addr = start_addr; i_addr < start_addr + len; i_addr+=512) //program 512byte       
+    {
+     FOTA_ProgramFlash(i_addr, 512, pProgramData);//program 512 byte          
+     pProgramData=pProgramData+128;//4x128
+    }
+    //Verify
+    uint32_t* pVerifySrc= (uint32_t*)data;
+    uint32_t* pVerifyDest = (uint32_t*)start_addr;
+
+    for(uint32_t i_wordId = start_addr; i_wordId < len; i_wordId++)
+    {
+        CY_ASSERT(pVerifyDest[i_wordId] == pVerifySrc[i_wordId]); 
+    }
+
+    crc1 = xmodem_crc16_ccitt(data, len);
+    //crc2 = crc16_ccitt((uint8_t const*)start_addr, len);    
+    crc2 = xmodem_crc16_ccitt(data, len);
+    if (crc1 == crc2)
+    {
+        ret = true;
+    }
+    else
+    {
+        ret = false;
+    }
+    
+    return ret;
+}
+
 int32_t Xmodem_receive(uint8_t *dest, uint32_t receive_buffsize, uint32_t start_addr, uint32_t max_total)
 {
     uint32_t flash_address;
@@ -14,127 +181,117 @@ int32_t Xmodem_receive(uint8_t *dest, uint32_t receive_buffsize, uint32_t start_
     int c = 0;
     int retry, retrans = MAXRETRANS;
     uint8_t ret;
-    uint16_t timeoutPeriod;
 
     totalSize = 0;
 
-    flash_address = start_addr;// flash 起始地址
+    flash_address = start_addr;  // flash starting address
+
+    // Term_Printf("Xmodem: Starting data reception.\r\n");
 
     for(;;) 
     {
         // Clear hardware watchdog
         // ClearWatchdog();
       
-        for( retry = 0; retry < 5; ++retry)/* 5 times retry for synchronization */
-         { 
+        for (retry = 0; retry < 5; ++retry)  // Retry up to 5 times for synchronization
+        { 
             if (trychar)
             {
-                _outbyte(trychar);    // 写数据到串口        
+                // Term_Printf("Xmodem: Sending start character: 0x%X\r\n", trychar);
+                _outbyte(trychar);    // Write data to UART        
             }
 
-            if (trychar != 0)  //// initial the first communicaiton (checking CRC mode or checksum mode) uses 3 seoncds timeout
-            { 
-                timeoutPeriod = DLY_3S; //3000
-            } 
-            else  // package synchronization uses 10 seconds timeout
-            {   
-                timeoutPeriod = DLY_10S;
-            }
-
-            if ((c = _inbyte(timeoutPeriod)) >= 0) 
+            if ((c = _inbyte(DLY_20S)) >= 0) 
             {
                 switch (c) 
                 {
-                    case SOH://0x01
+                    case SOH:  // 0x01
                         bufsz = 128;
+                        // Term_Printf("Xmodem: SOH received, packet size 128 bytes.\r\n");
                         goto start_recv;
-                    case STX: //0x02
+                    case STX:  // 0x02
                         bufsz = 1024;
+                        // Term_Printf("Xmodem: STX received, packet size 1024 bytes.\r\n");
                         goto start_recv;
-                    case EOT: // 0x04
+                    case EOT:  // 0x04
+                        // Term_Printf("Xmodem: EOT received, ending transmission.\r\n");
                         xmodem_flushinput();
                         _outbyte(ACK);
-                        // call flash program (EOT)
                         Cy_GPIO_Set(USER_LED_PORT, USER_LED_PIN);    
 
-                     #if 0
-                                                ret = flashWrite(dest, flash_address, len);
-                        #else
-                            if (max_total >= (totalSize+len)) 
-                            {
-                                ret = xmodem_flashWrite(dest, flash_address, len);
-                            } 
-                            else 
-                            {
-                                ret = false;
-                            }                            
-                    #endif    
+                        if (max_total >= (totalSize + len)) 
+                        {
+                            ret = xmodem_flashWrite(dest, flash_address, len);
+                        } 
+                        else 
+                        {
+                            ret = false;
+                        }                            
 
                         Cy_GPIO_Clr(USER_LED_PORT, USER_LED_PIN);       
 
-
                         if (ret == false)
                         {
+                            // Term_Printf("Xmodem: Flash write error.\r\n");
                             xmodem_flushinput();
                             _outbyte(CAN);
                             _outbyte(CAN);
                             _outbyte(CAN);                        
-                            return XMODEM_RESULT_FLASH_ERROR; /* flash error */
+                            return XMODEM_RESULT_FLASH_ERROR;  // Flash error
                         }
 
                         flash_address += len;
                         totalSize += len;
-                        return totalSize; /* normal end */
-                    case CAN: //0x18
-                        // check cancel
-                        if ((c = _inbyte(DLY_1S)) == CAN) 
+                        Term_Printf("Xmodem: Total size received: %d bytes.\r\n", totalSize);
+                        return totalSize;  // Normal end
+                    case CAN:  // 0x18
+                        if ((c = _inbyte(DLY_20S)) == CAN) 
                         {
+                            Term_Printf("Xmodem: Cancel signal received.\r\n");
                             xmodem_flushinput();
                             _outbyte(ACK);
-                            return XMODEM_RESULT_REMOTE_CANCEL; /* canceled by remote */
+                            return XMODEM_RESULT_REMOTE_CANCEL;  // Canceled by remote
                         }
                         break;
                     default:
                         if (trychar == 0) 
-                        { // package synchronization (received unknown char.
-                            charUnknonwArray[error_syncChar++] = (uint8_t) c;
-                            xmodem_flushinput();   
-                            _outbyte(NAK);  // send out NAK to request sender to retransmit package
+                        {
+                            Term_Printf("Xmodem: Unknown char received during sync: 0x%X\r\n", c);
+                            xmodem_flushinput();
+                            _outbyte(NAK);  // Request sender to retransmit
                         }
                         break;
                 }
             }
- 
-            if (trychar == 0)  // package synchronization 10 seconds timeout
-            { 
-                _outbyte(NAK);  // send out NAK to request sender to retransmit package                 
-            }
-        } // end of rety count
-        
 
-        
+            if (trychar == 0)  
+            { 
+                _outbyte(NAK);  // Request sender to retransmit package
+            }
+        }
+
         if (trychar == 'C')
         { 
-            trychar = NAK; continue; 
-        }    // initial the first communicaiton cannot do CRC mode, try use NAK (not 'C')
-        
+            trychar = NAK; 
+            continue; 
+        }
+
+        Term_Printf("Xmodem: Sync error, sending CAN.\r\n");
         xmodem_flushinput();
         _outbyte(CAN);
         _outbyte(CAN);
         _outbyte(CAN);
-        return XMODEM_RESULT_SYNC_ERROR; /* sync error */
+        return XMODEM_RESULT_SYNC_ERROR;  // Sync error
 
     start_recv: 
-        if (trychar == 'C') 
-            crc_mode = 1;
-
+        if (trychar == 'C') crc_mode = 1;
         trychar = 0;
         p = xbuff;
         *p++ = c;
 
-        for (i = 0;  i < (bufsz+(crc_mode?1:0)+3); ++i) 
+        for (i = 0; i < (bufsz + (crc_mode ? 1 : 0) + 3); ++i) 
         {
-            if ((c = _inbyte(DLY_1S)) >= 0) 
+            if ((c = _inbyte(DLY_20S)) >= 0) 
             {
                 *p++ = c;
             } 
@@ -144,22 +301,22 @@ int32_t Xmodem_receive(uint8_t *dest, uint32_t receive_buffsize, uint32_t start_
             }
         }
 
-        if (i != (bufsz+(crc_mode?1:0)+3))    // missing data for one complete package
-        {   
-            error_packetsize++;
-            _outbyte(NAK);  // send out NAK to request sender to retransmit package               
+        if (i != (bufsz + (crc_mode ? 1 : 0) + 3))  // Missing data for a complete package
+        {
+            Term_Printf("Xmodem: Incomplete packet received, sending NAK.\r\n");
+            _outbyte(NAK);  // Request retransmission
         } 
-        else if (!((xbuff[1] == (unsigned char)(~xbuff[2])) &&  xmodem_check(crc_mode, &xbuff[3], bufsz)))  // package data not correct
-        {  
-            error_packetdata++;
-            xmodem_flushinput();  // flush input before sending out NAK
-            _outbyte(NAK);  // send out NAK to request sender to retransmit package  
+        else if (!((xbuff[1] == (unsigned char)(~xbuff[2])) && xmodem_check(crc_mode, &xbuff[3], bufsz)))  // Invalid package data
+        {
+            Term_Printf("Xmodem: Invalid packet data received, sending NAK.\r\n");
+            xmodem_flushinput();
+            _outbyte(NAK);  // Request retransmission
         } 
-        else if (!((xbuff[1] == packetno) || (xbuff[1] == (unsigned char)packetno-1))) 
-        { 
-            error_packetno++;
-            xmodem_flushinput();  // flush input before sending out NAK
-            _outbyte(NAK);  // send out NAK to request sender to retransmit package 
+        else if (!((xbuff[1] == packetno) || (xbuff[1] == (unsigned char)packetno - 1))) 
+        {
+            Term_Printf("Xmodem: Incorrect packet number received, sending NAK.\r\n");
+            xmodem_flushinput();
+            _outbyte(NAK);  // Request retransmission
         } 
         else 
         {
@@ -170,60 +327,51 @@ int32_t Xmodem_receive(uint8_t *dest, uint32_t receive_buffsize, uint32_t start_
                     count = bufsz;
                 if (count > 0) 
                 {
-                    memcpy (&dest[len], &xbuff[3], count);
+                    memcpy(&dest[len], &xbuff[3], count);
                     len += count;
                 }                
                 if (receive_buffsize == len)
                 {
-                    // buffer full
-                    // to-do call flash program
-
+                    // Term_Printf("Xmodem: Buffer full, writing to flash.\r\n");
                     Cy_GPIO_Set(USER_LED_PORT, USER_LED_PIN);      
-                    #if 0          
-                                        ret = flashWrite(dest, flash_address, len);
-                    #else
-                                        if (max_total >= (totalSize+len))
-                                        {                    
-                                            ret = xmodem_flashWrite(dest, flash_address, len);    
-                                        } else {
-                                            ret = false;
-                                        }    
-                    #endif                    
-                    Cy_GPIO_Clr(USER_LED_PORT, USER_LED_PIN);    
 
-                        if (ret == false)
-                        {
-                            xmodem_flushinput();
-                            _outbyte(CAN);
-                            _outbyte(CAN);
-                            _outbyte(CAN);                        
-                            return XMODEM_RESULT_FLASH_ERROR; /* flash error */
-                        }
-                        flash_address += len;
-                        totalSize += len;
-                        // reset buffer
-                        len = 0;
+                    if (max_total >= (totalSize + len))                    
+                        ret = xmodem_flashWrite(dest, flash_address, len);
+                    else
+                        ret = false;
+
+                    Cy_GPIO_Clr(USER_LED_PORT, USER_LED_PIN);
+
+                    if (ret == false)
+                    {
+                        Term_Printf("Xmodem: Flash write error during buffer full state.\r\n");
+                        xmodem_flushinput();
+                        _outbyte(CAN);
+                        _outbyte(CAN);
+                        _outbyte(CAN);
+                        return XMODEM_RESULT_FLASH_ERROR;  // Flash error
+                    }
+
+                    flash_address += len;
+                    totalSize += len;
+                    len = 0;
                 }
                 ++packetno;
-                // successful transmission (reset retrans counter to max.)
-                retrans = MAXRETRANS+1;
+                retrans = MAXRETRANS + 1;  // Reset retransmission counter
             }
-             else
-            {
-                error_packetnoresend++;
-            }
-          
+
             if (--retrans <= 0) 
             {
-                /* Still not the targeted package after number of times retry */
+                Term_Printf("Xmodem: Too many retransmissions, sending CAN.\r\n");
                 xmodem_flushinput();
                 _outbyte(CAN);
                 _outbyte(CAN);
                 _outbyte(CAN);
-                return XMODEM_RESULT_TOO_MANY_RETRAN; /* too many retry error */
+                return XMODEM_RESULT_TOO_MANY_RETRAN;  // Too many retries
             }
-            sendACK++;
-            _outbyte(ACK);
+
+            _outbyte(ACK);  // Send acknowledgment
+            // Term_Printf("Xmodem: The %uth Package received success.\r\n", packetno);
         }
     }
 }
@@ -312,9 +460,9 @@ int send_file(int fd, const char *filename) {
             fclose(file);
             return -1;
         }
-    } while (ch != CRCCHR);
+    } while (keep_running && (ch != CRCCHR));
 
-    while (1) {
+    while (keep_running) {
         size_t bytes_read = fread(buffer, 1, BLOCK_SIZE, file);
         if (bytes_read == 0) {
             break; // No more data to send
@@ -357,7 +505,7 @@ int send_file(int fd, const char *filename) {
     }
     char eot = EOT;
     // Send EOT
-    while (1) {
+    while (keep_running) {
         if (write(fd, &eot, 1) < 0) {
             perror("write");
             fclose(file);
@@ -450,3 +598,7 @@ int send_file(int fd, const char *filename) {
 ### 总结
 
 `send_file` 和 `Xmodem_receive` 是基于 **XMODEM 协议** 的文件传输函数，分别处理发送和接收。通过校验包序号和数据完整性，它们确保数据在串口上的可靠传输。
+
+### 传输优化
+
+鉴于接收端和发送端OTA过程中常见同步错误的问题，主要在于建链过程中请求与响应缺乏同步机制，故而需要延长响应的等待时间，修改后实测稳定性极大增强。
