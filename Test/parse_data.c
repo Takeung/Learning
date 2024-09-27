@@ -52,7 +52,7 @@ int main()
 {
 	// char g_uart_in_data[] = "^^01060500000002$$";
 	// uint8_t g_uart_in_data[] = "^^01070500000003$$";
-	uint8_t g_uart_in_data[] = "^^01050500000001$$";
+	uint8_t g_uart_in_data[] = "^^0108050000000C$$";
 	parseSerialData(&g_uart_in_data[0]);
 	
 	return 0;
