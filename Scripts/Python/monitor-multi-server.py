@@ -4,7 +4,9 @@ import threading
 from datetime import datetime
 
 # IP列表
-ip_list = ['172.26.1.187', '172.26.1.188', '172.26.1.190', '172.26.1.191', '172.26.1.192', '172.26.1.193',
+ip_list = ['172.26.1.131', '172.26.1.163', 
+           '172.26.1.187', '172.26.1.188', 
+        # '172.26.1.190', '172.26.1.191', '172.26.1.192', '172.26.1.193',
            '192.168.11.244', '192.168.11.245', '192.168.11.246', '192.168.11.247', 
            '192.168.11.248', '192.168.11.249']
 # 保存结果的文件
@@ -45,7 +47,7 @@ class ConnectionMonitor:
                 self.is_connected = True
                 disconnection_duration = (current_time - self.disconnection_start_time).total_seconds()
                 formatted_duration = self.format_duration(disconnection_duration)
-                self.log_disconnection(self.disconnection_start_time, current_time, formatted_duration)
+                self.log_disconnection(self.disconnection_start_time, current_time, formatted_duration, disconnection_duration)
                 print(f"{self.ip} 连接恢复 at {current_time}，断开时长 {formatted_duration}")
             
             time.sleep(1)  # 每秒检查一次
@@ -66,12 +68,18 @@ class ConnectionMonitor:
         else:
             return f"{int(seconds)}秒"
 
-    def log_disconnection(self, start_time, end_time, duration):
+    def log_disconnection(self, start_time, end_time, duration_str, duration):
         try:
             # 使用锁来同步文件写入操作，避免多线程冲突
             with file_lock:
                 with open(log_file, 'a') as f:
-                    f.write(f"{self.ip} 断开 at {start_time}, 恢复 at {end_time}, 持续时间: {duration}\n")
+                    f.write(f"{self.ip} 断开 at {start_time}, 恢复 at {end_time}, 持续时间: {duration_str}\n")
+                    
+                    # 增加对断开时间的判断
+                    if 30 <= duration <= 60:
+                        f.write(f"{self.ip} 疑似切区重启, 断开时长: {duration_str}\n")
+                        print(f"{self.ip} 疑似切区重启, 断开时长: {duration_str}")
+
         except Exception as e:
             print(f"写入文件失败: {e}")
 
@@ -101,4 +109,3 @@ except KeyboardInterrupt:
         thread.join()
 
     print("所有IP监控已停止，程序已退出。")
-

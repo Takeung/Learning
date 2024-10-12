@@ -59,6 +59,32 @@ Cy_Flashc_SetMainBankMode(CY_FLASH_DUAL_BANK_MODE);
 
 ![](https://s2.loli.net/2024/08/13/X5fw9tAgzs8R63U.png)
 
+切换分区时检查CM0核是否正常，0x28020000对应的是CM0核正常运行时的代码起始地址（APP中的首地址）
+
+![](https://s2.loli.net/2024/10/12/uovBlqGrKiP9EdW.png)
+
+![](https://s2.loli.net/2024/10/12/rJmyp9dICtRnZP6.png)
+
+> 如果不能匹配，则认为目标分区CM0核的代码损坏，执行else分支，不允许切换分区。
+
+确认目标分区主核正常之后，执行分区切换，通过
+
+```c
+FLASHC->unFLASH_CTL.stcField.u1MAIN_MAP = CY_FLASH_MAPPING_B;
+```
+
+实现flash地址0x10000000和0x12000000代码的互换，具体实现由芯片底层控制，而后调用BACK_TO_START函数保证从0x10000000地址开始执行程序。
+
+![](https://s2.loli.net/2024/10/12/suhCZO2Yj6Py3rp.png)
+
+升级程序时通过在0x14000000写入相应的标志位（0xAAAAAAAA或者0xBBBBBBBB），
+
+![](https://s2.loli.net/2024/10/12/r67hGYfxSV3keFd.png)
+
+当重启检查切换分区时即可通过检查0x14000000的标志位，以确认需要切换的目标分区。
+
+![](https://s2.loli.net/2024/10/12/dTDLwuYFis8oZ3G.png)
+
 ### 3.3 烧录
 
 <img src="https://s2.loli.net/2024/08/13/T52arY7S8Zz3mEp.png" style="zoom: 67%;" />
